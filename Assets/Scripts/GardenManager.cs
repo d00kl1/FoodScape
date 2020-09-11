@@ -5,6 +5,12 @@ using UnityEngine.UI;
 using UnityEngine.XR.ARSubsystems;
 using UnityEngine.XR.ARFoundation;
 
+public enum Actions 
+{
+    Plant,
+    Harvest,    
+}
+
 
 [RequireComponent(typeof(ARTrackedImageManager))]
 public class GardenManager : MonoBehaviour
@@ -26,6 +32,8 @@ public class GardenManager : MonoBehaviour
     private GameObject groundObject;
 
     private int itemType;
+
+    private Actions action;
 
     void Awake()
     {        
@@ -110,6 +118,14 @@ public class GardenManager : MonoBehaviour
                         Debug.Log("Touched ground");
                         AddCube(hit.point);                        
                     }
+                    else if (hit.collider.tag == "item")
+                    {
+                        if (action == Actions.Harvest)
+                        {
+                            Debug.Log("Deleting object");
+                            Destroy(hit.collider.gameObject);
+                        }
+                    }
                 }
             }
         }
@@ -154,6 +170,21 @@ public class GardenManager : MonoBehaviour
 
     public void SetItemType(int itemType)
     {
+        switch (itemType)
+        {
+            case 0:        
+            case 1:
+            case 2:
+            case 3:
+            case 4:
+            case 5:
+                action = Actions.Plant;
+                break;
+            case 6:
+                action = Actions.Harvest;
+                break;
+        }
+
         this.itemType = itemType;
     }
 }
