@@ -15,21 +15,15 @@ public enum Actions
 [RequireComponent(typeof(ARTrackedImageManager))]
 public class GardenManager : MonoBehaviour
 {
-    private MeshCollider meshCollider;
-    private MeshRenderer meshRenderer;
-    private BoxCollider  boxCollider;
-    
-    public Material itemMaterial;
-    private Material item0Material;
-    private Material item1Material;
-    private Material item2Material;
-    private Material item3Material;
-    private Material item4Material;
-    private Material item5Material;
+    public GameObject item_0Prefab;
+    public GameObject item_1Prefab;
+    public GameObject item_2Prefab;
+    public GameObject item_3Prefab;
+    public GameObject item_4Prefab;
+    public GameObject item_5Prefab;
+    public GameObject groundPrefab;
 
-    public Material groundMaterial;
-
-    private GameObject groundObject;
+    private GameObject ground;
 
     private int itemType;
 
@@ -37,30 +31,7 @@ public class GardenManager : MonoBehaviour
 
     void Awake()
     {        
-        m_TrackedImageManager = GetComponent<ARTrackedImageManager>();        
-        groundObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        groundObject.tag = "ground";
-        
-        groundObject.GetComponent<Renderer>().material = groundMaterial;
-
-        item0Material = Instantiate(itemMaterial);
-        item0Material.color = Color.green;
-
-        item1Material = Instantiate(itemMaterial);
-        item1Material.color = Color.yellow;
-
-        item2Material = Instantiate(itemMaterial);
-        item2Material.color = Color.red;
-
-        item3Material = Instantiate(itemMaterial);
-        item3Material.color = Color.magenta;
-
-        item4Material = Instantiate(itemMaterial);
-        item4Material.color = Color.cyan;
-
-        item5Material = Instantiate(itemMaterial);
-        item5Material.color = Color.blue;       
-
+        m_TrackedImageManager = GetComponent<ARTrackedImageManager>();
     }    
 
     ARTrackedImageManager m_TrackedImageManager;    
@@ -77,7 +48,7 @@ public class GardenManager : MonoBehaviour
     
     void OnTrackedImagesChanged(ARTrackedImagesChangedEventArgs eventArgs)
     {
-        var worldCubeOffset = new Vector3(0.0f, 0.0f, 0.0f);
+        var groundOffset = new Vector3(0.0f, 0.0f, 0.0f);
 
         foreach (var trackedImage in eventArgs.added)
         {
@@ -85,18 +56,18 @@ public class GardenManager : MonoBehaviour
             Debug.Log("detected_image_rotation: " + trackedImage.transform.rotation);
             Debug.Log("detected_image_local_scale: " + trackedImage.transform.localScale);
 
-            groundObject.transform.position = trackedImage.transform.position + worldCubeOffset;
-            groundObject.transform.rotation = trackedImage.transform.rotation;
-            groundObject.transform.localScale = new Vector3(0.20f, 0.10f, 0.15f);            
+            ground = Instantiate(groundPrefab, trackedImage.transform.position + groundOffset, Quaternion.identity);            
+            ground.transform.rotation = trackedImage.transform.rotation;
+            ground.transform.localScale = new Vector3(0.20f, 0.10f, 0.15f);            
         }
 
         foreach (var trackedImage in eventArgs.updated)
         {
             // TODO monitor trackedImage.trackingState
-            if (groundObject)
+            if (ground)
             {
-                groundObject.transform.position = trackedImage.transform.position + worldCubeOffset;
-                groundObject.transform.rotation = trackedImage.transform.rotation;
+                ground.transform.position = trackedImage.transform.position + groundOffset;
+                ground.transform.rotation = trackedImage.transform.rotation;
             }
         }
     }
@@ -113,19 +84,16 @@ public class GardenManager : MonoBehaviour
                 
                 Ray ray = Camera.main.ScreenPointToRay(touch.position);
 
-                if (Physics.Raycast(ray, out RaycastHit hit)) {
+                if (Physics.Raycast(ray, out RaycastHit hit)) {                    
                     if (hit.collider.tag == "ground") {
                         Debug.Log("Touched ground");
-                        AddCube(hit.point);                        
+                        AddItem(hit.point);
                     }
-                    else if (hit.collider.tag == "item")
+                    else if ((hit.collider.tag == "item") && (action == Actions.Harvest)) 
                     {
-                        if (action == Actions.Harvest)
-                        {
-                            Debug.Log("Deleting object");
-                            Destroy(hit.collider.gameObject);
-                        }
-                    }
+                        Debug.Log("Deleting object");
+                        Destroy(hit.collider.gameObject);                        
+                    }                    
                 }
             }
         }
@@ -133,39 +101,38 @@ public class GardenManager : MonoBehaviour
 
 
 
-    void AddCube(Vector3 position)
+    void AddItem(Vector3 position)
     {
-        var cubeOffset = new Vector3(0.0f, 0.01f, 0.0f);
-
-        GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        cube.tag = "item";
-        cube.transform.position = position + cubeOffset;
-        //cube.transform.rotation = rotation;
-        //cube.transform.LookAt(Camera.main.transform);
-        cube.transform.localScale = new Vector3(0.01f, 0.01f, 0.01f);
+        var itemOffset = new Vector3(0.0f, 0.01f, 0.0f);
+        
+        GameObject item = null;        
 
         switch (itemType) {
             case 0:
-                cube.GetComponent<Renderer>().material = item0Material;
+                item = Instantiate(item_0Prefab, position + itemOffset, Quaternion.identity);
                 break;
             case 1:
-                cube.GetComponent<Renderer>().material = item1Material;
+                item = Instantiate(item_1Prefab, position + itemOffset, Quaternion.identity);
                 break;
             case 2:
-                cube.GetComponent<Renderer>().material = item2Material;
+                item = Instantiate(item_2Prefab, position + itemOffset, Quaternion.identity);
                 break;
             case 3:
-                cube.GetComponent<Renderer>().material = item3Material;
+                item = Instantiate(item_3Prefab, position + itemOffset, Quaternion.identity);
                 break;
             case 4:
-                cube.GetComponent<Renderer>().material = item4Material;
+                item = Instantiate(item_4Prefab, position + itemOffset, Quaternion.identity);
                 break;
             case 5:
-                cube.GetComponent<Renderer>().material = item5Material;
+                item = Instantiate(item_5Prefab, position + itemOffset, Quaternion.identity);
                 break;
         }
 
-        cube.transform.SetParent(groundObject.transform);
+        //item.transform.rotation = rotation;
+        //item.transform.LookAt(Camera.main.transform);
+        //item.transform.localScale = new Vector3(0.01f, 0.01f, 0.01f);
+
+        item.transform.SetParent(ground.transform);
     }
 
     public void SetItemType(int itemType)
