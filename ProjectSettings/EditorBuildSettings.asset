@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1045 &1
+EditorBuildSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Scenes:
+  - enabled: 0
+    path: Assets/Scenes/SampleScene.unity
+    guid: d1c3109bdb54ad54c8a2b2838528e640
+  - enabled: 1
+    path: Assets/FoodScape.unity
+    guid: f5eea10629efd49b09268eda57dbfc09
+  m_configObjects:
+    com.unity.xr.arkit.PlayerSettings: {fileID: 11400000, guid: eeecd53989a324535841031dfb53da3e, type: 2}
+    com.unity.xr.management.loader_settings: {fileID: 11400000, guid: c8ef7343f191c4d6590d2448352acba1, type: 2}
