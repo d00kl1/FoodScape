@@ -25,3 +25,13 @@ MonoBehaviour:
     m_SpecifySize: 1
     m_Name: detection_image
     m_Texture: {fileID: 0}
+  - m_SerializedGuid:
+      m_GuidLow: 5628272647154415927
+      m_GuidHigh: 18119063451139122348
+    m_SerializedTextureGuid:
+      m_GuidLow: 6077915259396174920
+      m_GuidHigh: 12438279179000154344
+    m_Size: {x: 0.11, y: 0.10961622}
+    m_SpecifySize: 1
+    m_Name: kleenex
+    m_Texture: {fileID: 0}
