@@ -23,11 +23,15 @@ public class GardenManager : MonoBehaviour
     public GameObject item_5Prefab;
     public GameObject groundPrefab;
 
+    public AudioController audioController;
+
     private GameObject ground;
 
     private int itemType;
 
     private Actions action;
+
+    
 
     void Awake()
     {        
@@ -129,7 +133,8 @@ public class GardenManager : MonoBehaviour
         }
 
         //item.transform.rotation = rotation;
-        //item.transform.LookAt(Camera.main.transform);        
+        //item.transform.LookAt(Camera.main.transform);
+        audioController.PlayRandomClip(audioController.forwardNoteClips);
         item.transform.SetParent(ground.transform);
     }
 
