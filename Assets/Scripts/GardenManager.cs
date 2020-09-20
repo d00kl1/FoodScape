@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.XR.ARSubsystems;
 using UnityEngine.XR.ARFoundation;
+using UnityEngine.EventSystems;
+using DG.Tweening;
 
 public enum Actions 
 {
@@ -85,25 +87,33 @@ public class GardenManager : MonoBehaviour
             if (touch.phase == TouchPhase.Began)
             {
                 Debug.Log("Detected Touch");
-                
-                Ray ray = Camera.main.ScreenPointToRay(touch.position);
 
-                if (Physics.Raycast(ray, out RaycastHit hit)) {                    
-                    if (hit.collider.tag == "ground") {
-                        Debug.Log("Touched ground");
-                        AddItem(hit.point);
-                    }
-                    else if ((hit.collider.tag == "item") && (action == Actions.Harvest)) 
+                //bool blockedByCanvasUI = EventSystem.current != null && EventSystem.current.IsPointerOverGameObject();
+
+                bool blockedByCanvasUI = false;
+
+                if (!blockedByCanvasUI)
+                {
+                    Ray ray = Camera.main.ScreenPointToRay(touch.position);
+
+                    if (Physics.Raycast(ray, out RaycastHit hit))
                     {
-                        Debug.Log("Deleting object");
-                        Destroy(hit.collider.gameObject);                        
-                    }                    
+                        if (hit.collider.tag == "ground")
+                        {
+                            Debug.Log("Touched ground");
+                            AddItem(hit.point);
+                        }
+                        else if ((hit.collider.tag == "item") && (action == Actions.Harvest))
+                        {
+                            Debug.Log("Deleting object");
+                            audioController.PlayRandomClip(audioController.reverseNoteClips);
+
+                            hit.collider.gameObject.transform.DOScale(0, .1f).SetEase(Ease.InBack).OnComplete(() => Destroy(hit.collider.gameObject));                        }
+                    }
                 }
             }
         }
     }
-
-
 
     void AddItem(Vector3 position)
     {
@@ -136,6 +146,8 @@ public class GardenManager : MonoBehaviour
         //item.transform.LookAt(Camera.main.transform);
         audioController.PlayRandomClip(audioController.forwardNoteClips);
         item.transform.SetParent(ground.transform);
+
+        item.transform.DOScale(0, .25f).SetEase(Ease.OutBounce).From();
     }
 
     public void SetItemType(int itemType)
