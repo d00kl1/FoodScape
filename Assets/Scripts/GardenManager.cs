@@ -58,7 +58,7 @@ public class GardenManager : MonoBehaviour
 
             ground = Instantiate(groundPrefab, trackedImage.transform.position + groundOffset, Quaternion.identity);            
             ground.transform.rotation = trackedImage.transform.rotation;
-            ground.transform.localScale = new Vector3(0.20f, 0.10f, 0.15f);            
+            //ground.transform.localScale = new Vector3(0.20f, 0.10f, 0.15f);            
         }
 
         foreach (var trackedImage in eventArgs.updated)
@@ -129,9 +129,7 @@ public class GardenManager : MonoBehaviour
         }
 
         //item.transform.rotation = rotation;
-        //item.transform.LookAt(Camera.main.transform);
-        //item.transform.localScale = new Vector3(0.01f, 0.01f, 0.01f);
-
+        //item.transform.LookAt(Camera.main.transform);        
         item.transform.SetParent(ground.transform);
     }
 
