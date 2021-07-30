@@ -1,14 +1,11 @@
 ﻿using UnityEngine;
 using UnityEngine.Audio;
+using System.Collections;
 
 public class AudioController : MonoBehaviour
 {
     [Tooltip("The time used in the audio transitions.")]
-    public float transitionTime = .05f;
-    [Tooltip("The audio source used for the background music.")]
-    public AudioSource backgroundMusicSource;
-    [Tooltip("The audio source used for the reverse background music.")]
-    public AudioSource reverseMusicSource;
+    public float transitionTime = .05f;    
     [Tooltip("The audio source used for the random note.")]
     public AudioSource noteClipSource;
     [Space]
@@ -24,6 +21,61 @@ public class AudioController : MonoBehaviour
     public AudioClip[] forwardNoteClips;
     [Tooltip("The reverse notes used when an element is destroyed.")]
     public AudioClip[] reverseNoteClips;
+
+    AudioSource[] audioSourceArray;
+	public AudioClip[] audioClipArray;
+	
+	int nextClip = 0;
+	double nextStartTime = AudioSettings.dspTime + 0.5;
+	int toggle = 0;
+    bool firstTime = true;
+
+    public IEnumerator StartFade(AudioSource audioSource, float duration, float targetVolume)
+    {
+        float currentTime = 0;
+        float start = 0;
+
+        while (currentTime < duration)
+        {
+            currentTime += Time.deltaTime;
+            audioSource.volume = Mathf.Lerp(start, targetVolume, currentTime / duration);
+            yield return null;
+        }
+
+        firstTime = false;
+        yield break;
+    }    
+
+	void Awake() {
+		audioSourceArray = new AudioSource[2];
+		audioSourceArray[0] = gameObject.AddComponent<AudioSource>();
+		audioSourceArray[1] = gameObject.AddComponent<AudioSource>();		
+	}	
+
+	void Update () {
+	    if (AudioSettings.dspTime > nextStartTime - 1) {
+		    AudioClip clipToPlay = audioClipArray[nextClip];
+
+		    // Loads the next Clip to play and schedules when it will start
+		    audioSourceArray[toggle].clip = clipToPlay;
+
+            if (firstTime) {                
+                StartCoroutine(StartFade(audioSourceArray[toggle], 10, 1.0f));              
+            }
+            
+		    audioSourceArray[toggle].PlayScheduled(nextStartTime);
+
+		    // Checks how long the Clip will last and updates the Next Start Time with a new value
+		    double duration = (double)clipToPlay.samples / clipToPlay.frequency;
+		    nextStartTime = nextStartTime + duration;
+
+		    // Switches the toggle to use the other Audio Source next
+		    toggle = 1 - toggle;
+
+		    // Increase the clip index number, reset if it runs out of clips
+		    nextClip = nextClip < audioClipArray.Length - 1 ? nextClip + 1 : 0;
+	    }
+	}
 
 
     //Reset our mix when the game starts
@@ -62,9 +114,7 @@ public class AudioController : MonoBehaviour
     /// Rescale the sounds pitch to 1.
     /// </summary>
     public void FullSpeedAudio()
-    {
-        backgroundMusicSource.pitch = 1f;
-        reverseMusicSource.pitch = 1f;
+    {     
         noteClipSource.pitch = 1f;
     }
 
@@ -73,8 +123,6 @@ public class AudioController : MonoBehaviour
     /// </summary>
     public void HalfPitchAudio()
     {
-        backgroundMusicSource.pitch = .5f;
-        reverseMusicSource.pitch = .5f;
         noteClipSource.pitch = .5f;
     }
     /// <summary>

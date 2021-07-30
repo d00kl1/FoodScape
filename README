@@ -1,1 +1,12 @@
+REQUIREMENTS
+- Unity
+https://unity.com/developer-tools
+
+- AR support in Unity
+Using Unity's Package Manager, install AR Foundation and ARKit XR Plugin
+
+- Xcode (ios)
+https://developer.apple.com/xcode/
+
+UI IDEAS
 1. 5 Tabbed panels, each tab standing for an environment. Holds items for that environment. https://github.com/yasirkula/UnityDynamicPanels

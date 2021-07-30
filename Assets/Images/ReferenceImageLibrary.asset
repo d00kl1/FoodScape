@@ -16,22 +16,52 @@ MonoBehaviour:
   m_GuidHigh: 6815796006053968305
   m_Images:
   - m_SerializedGuid:
-      m_GuidLow: 5259336624732174079
-      m_GuidHigh: 14830443408879257260
+      m_GuidLow: 5059454685411286668
+      m_GuidHigh: 624837848129502852
     m_SerializedTextureGuid:
-      m_GuidLow: 14168434481226943444
-      m_GuidHigh: 827671348563818555
-    m_Size: {x: 0.13, y: 0.10460937}
+      m_GuidLow: 2625956478219210663
+      m_GuidHigh: 12873144921065115354
+    m_Size: {x: 0.05, y: 0.053208556}
     m_SpecifySize: 1
-    m_Name: detection_image
+    m_Name: miniscule_0001_Layer-3
     m_Texture: {fileID: 0}
   - m_SerializedGuid:
-      m_GuidLow: 5628272647154415927
-      m_GuidHigh: 18119063451139122348
+      m_GuidLow: 4920648076095059541
+      m_GuidHigh: 14702714566007364736
     m_SerializedTextureGuid:
-      m_GuidLow: 6077915259396174920
-      m_GuidHigh: 12438279179000154344
-    m_Size: {x: 0.11, y: 0.10961622}
+      m_GuidLow: 1487661213279974949
+      m_GuidHigh: 9568090774841901818
+    m_Size: {x: 0.05, y: 0.052617803}
     m_SpecifySize: 1
-    m_Name: kleenex
+    m_Name: miniscule_0002_Layer-2
+    m_Texture: {fileID: 0}
+  - m_SerializedGuid:
+      m_GuidLow: 4659753902682523625
+      m_GuidHigh: 11426769773871714997
+    m_SerializedTextureGuid:
+      m_GuidLow: 6116923519620289815
+      m_GuidHigh: 17618126115371010441
+    m_Size: {x: 0.05, y: 0.049481865}
+    m_SpecifySize: 1
+    m_Name: miniscule_0005_Layer-4
+    m_Texture: {fileID: 0}
+  - m_SerializedGuid:
+      m_GuidLow: 5184078974653524586
+      m_GuidHigh: 9624129370568211891
+    m_SerializedTextureGuid:
+      m_GuidLow: 6067574380205915571
+      m_GuidHigh: 9434881639708645002
+    m_Size: {x: 0.05, y: 0.050252527}
+    m_SpecifySize: 1
+    m_Name: miniscule_0002_Layer-2
+    m_Texture: {fileID: 0}
+  - m_SerializedGuid:
+      m_GuidLow: 4649517976601778823
+      m_GuidHigh: 17384714082203884690
+    m_SerializedTextureGuid:
+      m_GuidLow: 6075284036125333423
+      m_GuidHigh: 11316392799688644216
+    m_Size: {x: 0.05, y: 0.05132275}
+    m_SpecifySize: 1
+    m_Name: miniscule_0005_Layer-4
     m_Texture: {fileID: 0}
